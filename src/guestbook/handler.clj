@@ -5,13 +5,16 @@
             [hiccup.middleware :refer [wrap-base-url]]
             [compojure.handler :as handler]
             [compojure.route :as route]
-            [guestbook.routes.home :refer [home-routes]]))
+            [guestbook.routes.home :refer [home-routes]]
+            [guestbook.models.db :as db]))
 
 (defn init []
   (println "guestbook is starting"))
 
 (defn destroy []
-  (println "guestbook is shutting down"))
+  (println "guestbook is shutting down")
+  (if-not (.exists (java.io.File. "./db.sq3"))
+    (db/create-guestbook-table)))
 
 (defroutes app-routes
   (route/resources "/")
