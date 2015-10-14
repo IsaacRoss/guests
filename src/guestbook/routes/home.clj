@@ -16,7 +16,6 @@
        [:time timestamp]])])
 
 
-
 (defn home [& [name message error]]
  (layout/common
    [:h1 "Guestbook"]
@@ -44,6 +43,18 @@
      [:br]
      (submit-button "comment"))))
 
+(defn save-message [name message]
+  (cond
+    (empty? name)
+    (home name message "Some jerk forgot to leave his name")
+    (empty? message)
+    (home name message "Silence, eh?")
+
+    :else
+    (do
+      (println name message)
+      (home))))
 
 (defroutes home-routes
-  (GET "/" [] (home)))
+  (GET "/" [] (home))
+  (POST "/" [name message] (save-message name message)))
